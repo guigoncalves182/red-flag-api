@@ -1,18 +1,25 @@
-import { Controller, Get, Inject } from '@nestjs/common';
+import { Body, Controller, Inject, Post } from '@nestjs/common';
 import {
-  CREATE_USER_TAG,
+  CREATE_USER_SERVICE_TAG,
   ICreateUserService,
-} from 'src/domain/interfaces/create-user.interface';
+} from 'src/domain/interfaces/services/create-user.interface';
+import { CreateUserDto } from '../dtos/user/create.dto';
+import { plainToInstance } from 'class-transformer';
+import { UserDto } from '../dtos/user/user.dto';
 
 @Controller('user')
 export class UserController {
   constructor(
-    @Inject(CREATE_USER_TAG)
-    private readonly userService: ICreateUserService,
+    @Inject(CREATE_USER_SERVICE_TAG)
+    private readonly createUserService: ICreateUserService,
   ) {}
 
-  @Get()
-  createUser(): string {
-    return this.userService.execute();
+  @Post('create')
+  async createUser(@Body() createUserDto: CreateUserDto): Promise<UserDto> {
+    const user = await this.createUserService.execute(createUserDto);
+
+    return plainToInstance(UserDto, user, {
+      excludeExtraneousValues: true,
+    });
   }
 }
