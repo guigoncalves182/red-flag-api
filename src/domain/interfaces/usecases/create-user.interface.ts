@@ -1,9 +1,9 @@
-import { User } from 'src/domain/schemas/user.schema';
+import { UserEntity } from 'src/domain/entities/user/user.entity';
 
 export const CREATE_USER_USE_CASE_TAG = Symbol('ICreateUserUseCase');
 
 export interface ICreateUserUseCase {
-  execute(params: ICreateUserUseCaseParams): Promise<User>;
+  execute(params: ICreateUserUseCaseParams): Promise<UserEntity>;
 }
 
 export interface ICreateUserUseCaseParams {

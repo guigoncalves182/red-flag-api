@@ -1,9 +1,9 @@
-import { User } from 'src/domain/schemas/user.schema';
+import { UserEntity } from 'src/domain/entities/user/user.entity';
 
 export const CREATE_USER_SERVICE_TAG = Symbol('ICreateUserService');
 
 export interface ICreateUserService {
-  execute(params: ICreateUserServiceParams): Promise<User>;
+  execute(params: ICreateUserServiceParams): Promise<UserEntity>;
 }
 
 export interface ICreateUserServiceParams {
