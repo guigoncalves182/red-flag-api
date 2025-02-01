@@ -18,7 +18,7 @@ export class CreateUserUseCase implements ICreateUserUseCase {
 
   async execute(params: ICreateUserUseCaseParams): Promise<UserEntity> {
     const user = new UserEntity(params);
-    user.hashPassword('Haxixe');
+    user.hashPassword(params.password);
 
     return await this.userRepository.create(user.toObject());
   }

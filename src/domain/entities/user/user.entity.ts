@@ -1,3 +1,5 @@
+import * as bcrypt from 'bcrypt';
+
 import { IToObject } from '../@shared/toObject.interface';
 
 class IUserEntity {
@@ -69,12 +71,20 @@ export class UserEntity implements IUserEntity, IToObject<IUserEntity> {
     };
   }
 
-  validatePassword(password: string): boolean {
-    return this._password === password;
+  validatePassword(
+    plainTextPassword: string,
+    hashedTextPassword: string,
+  ): boolean {
+    return bcrypt.compareSync(plainTextPassword, hashedTextPassword);
   }
 
-  hashPassword(newPassword: string): void {
-    this._password = newPassword;
+  hashPassword(plainTextPassword: string): void {
+    const salt_value = Number(process.env.BCRYPT_SALT_VALUE);
+
+    const salt = bcrypt.genSaltSync(salt_value);
+    const hashedTextPassword = bcrypt.hashSync(plainTextPassword, salt);
+
+    this._password = hashedTextPassword;
   }
 
   deactivate(): void {
